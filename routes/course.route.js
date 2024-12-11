@@ -7,5 +7,6 @@ router.route("/").get(coursesController.getAllCoursesController);
 router.route("/:id").get(coursesController.getAllCoursesByIdController);
 router.route("/enroll/:id").post(coursesController.enrollCourseController);
 router.route("/unenroll/:id").delete(coursesController.unenrollCourseController);
+router.route("/progress/:id").put(coursesController.updateCourseProgressController);
 
 module.exports = router;

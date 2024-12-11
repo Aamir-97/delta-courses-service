@@ -55,9 +55,26 @@ const unenrollCourseController = async (req, res) => {
   }
 };
 
+const updateCourseProgressController = async (req, res) => {
+  const progress = req.body.progress;
+  const userId = req.query.userId;
+  const courseId = req.params.id;
+  try {
+    const result = await courseService.updateCourseProgressService(
+      courseId,
+      userId,
+      progress
+    );
+    return res.status(200).json({ courses: result });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getAllCoursesController: getAllCoursesController,
   getAllCoursesByIdController: getAllCoursesByIdController,
   enrollCourseController: enrollCourseController,
   unenrollCourseController: unenrollCourseController,
+  updateCourseProgressController: updateCourseProgressController,
 };

@@ -72,10 +72,23 @@ const unenrollCourseService = async (courseId, userId) => {
   }
 };
 
+const updateCourseProgressService = async (courseId, userId, progress) => {
+  const db = conn.getDbConnection();
+  try {
+    const result = await db("user_courses")
+      .where({ user_id: userId, course_id: courseId })
+      .update({ progress });
+    return result;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 module.exports = {
   getAllCoursesService,
   getAllCoursesByIdService,
   getAllCoursesByUserIdService,
   enrollCourseService,
   unenrollCourseService,
+  updateCourseProgressService,
 };
