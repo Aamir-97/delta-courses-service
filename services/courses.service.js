@@ -40,7 +40,8 @@ const getAllCoursesByUserIdService = async (userId) => {
         "uc.course_id",
         "courses.idcourses"
       )
-      .where("user.iduser", userId);
+      .where("user.iduser", userId)
+      .where("uc.user_id", userId);
     return courses;
   } catch (error) {
     throw new Error(error.message);

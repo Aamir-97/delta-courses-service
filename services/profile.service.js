@@ -36,8 +36,32 @@ const updateProfileService = async (id, data) => {
   }
 };
 
+const createProfileService = async (data) => {
+  const db = conn.getDbConnection();
+
+  try {
+    const profile = await db(table).insert(data);
+    return profile;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+const deleteProfileService = async (id) => {
+  const db = conn.getDbConnection();
+
+  try {
+    const profile = await db(table).where({ iduser: id }).del();
+    return profile;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 module.exports = {
   getAllProfileService,
   getProfileByIdService,
-  updateProfileService
+  updateProfileService,
+  createProfileService,
+  deleteProfileService,
 };
