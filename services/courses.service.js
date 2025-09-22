@@ -33,15 +33,19 @@ const getAllCoursesByUserIdService = async (userId) => {
   try {
     const courses = await db("delta-courses.courses AS co")
       .select("courses.*", "uc.progress")
-      .leftJoin("delta-courses.user AS user", "co.idcourses", "user.iduser")
-      .leftJoin("delta-courses.user_courses AS uc", "uc.user_id", "user.iduser")
+      .leftJoin(
+        "delta-courses.user_courses AS uc",
+        "uc.course_id",
+        "co.idcourses"
+      )
+      .leftJoin("delta-courses.user AS user", "user.iduser", "uc.user_id")
       .leftJoin(
         "delta-courses.courses AS courses",
         "uc.course_id",
         "courses.idcourses"
       )
-      .where("user.iduser", userId)
-      .where("uc.user_id", userId);
+      .where("user.iduser", userId);
+
     return courses;
   } catch (error) {
     throw new Error(error.message);

@@ -7,6 +7,7 @@ const cors = require("cors");
 const corsOptions = require("./config/cors.config");
 const app = express();
 const port = process.env.PORT || 3000;
+const conn = require("./config/dbConn");
 
 app.use(express.json());
 app.use(cors(corsOptions));
@@ -15,23 +16,19 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
+const db = conn.getDbConnection();
 
-db.connect((err) => {
-  if (err) {
+// ✅ Check connection with a simple query
+db.raw("SELECT 1")
+  .then(() => {
+    console.log("Connected to the MySQL database.");
+  })
+  .catch((err) => {
     console.error("Error connecting to the database:", err);
-    return;
-  }
-  console.log("Connected to the MySQL database.");
-});
+  });
 
 app.use("/api", routes);

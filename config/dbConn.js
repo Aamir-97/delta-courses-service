@@ -14,15 +14,10 @@ const getDbConnection = () => {
   return connectDatabase();
 };
 
-// const closeDbConnection = () => {
-//   if (_dbConnection) {
-//     _dbConnection.destroy();
-//   }
-// };
-
 // const closeDbConnection = async () => {
 //   if (_dbConnection) {
 //     await _dbConnection.destroy();
+//     _dbConnection = null;
 //   }
 // };
 
