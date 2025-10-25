@@ -1,4 +1,5 @@
 const profileService = require("../services/profile.service");
+const bcrypt = require("bcrypt");
 
 const getAllProfilesController = async (req, res) => {
   try {
@@ -33,14 +34,26 @@ const updateProfileController = async (req, res) => {
 const createProfileController = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
-    password = await bcrypt.hash(password, 10);
-    const result = await profileService.createProfileService({ email, password });
-    return res.status(200).json({ profile: result });
+
+    // hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // create profile
+    const result = await profileService.createProfileService({
+      ...req.body,
+      password: hashedPassword,
+    });
+
+    return res.status(201).json({ status: "success", profile: result });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    console.error("Error in createProfileController:", error);
+    return res.status(500).json({ status: "error", error: error.message });
   }
 };
 
